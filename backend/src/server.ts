@@ -80,5 +80,5 @@ app.delete('/address/:id', (req: any, res: any) => {
 // Start the server
 const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(Server running at http://localhost:${PORT});
+  console.log(`Server running at http://localhost:${PORT}`);
 });

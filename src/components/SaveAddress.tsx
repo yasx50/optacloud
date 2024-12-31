@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-interface Address {
-  id: number;
-  label: string;
-  details: string; // Contains latitude and longitude in string format
-  fullAddress?: string; // Optional full address
-}
+// interface Address {
+//   id: number;
+//   label: string;
+//   details: string; // Contains latitude and longitude in string format
+//   fullAddress?: string; // Optional full address
+// }
 
 const SaveAddress: React.FC = () => {
   const [address, setAddress] = useState({
