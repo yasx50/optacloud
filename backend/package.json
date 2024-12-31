@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.ts",
+    "start": "node dist/server.js",
     "dev": "ts-node-dev src/server.ts",
-    "lint": "eslint 'src/**/*.{ts,js}'",
-    "format": "prettier --write 'src/**/*.{ts,js,json,md}'"
+    "build": "tsc",
+    "lint": "eslint 'src//*.{ts,js}'",
+    "format": "prettier --write 'src//*.{ts,js,json,md}'"
   },
   "keywords": [],
   "author": "",
