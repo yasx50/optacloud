@@ -40,7 +40,7 @@ const Analyse: React.FC = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/addresses"); // Adjust the URL as needed
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/address`); // Adjust the URL as needed
         setAddresses(response.data);
       } catch (error) {
         console.error("Error fetching addresses:", error);

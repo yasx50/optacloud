@@ -66,7 +66,7 @@ const ManageAddresses: React.FC = () => {
 
   const deleteAddress = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:5000/address/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/address/${id}`);
       setAddresses((prev) => prev.filter((address) => address.id !== id));
       alert("Address deleted successfully.");
     } catch (error) {

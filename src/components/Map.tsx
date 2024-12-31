@@ -107,7 +107,7 @@ const Map: React.FC = () => {
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/address", addressData);
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/address`, addressData);
             alert(`Address saved: ${response.data.label}`);
             setShowModal(false); // Close the modal after saving
         } catch (error) {
