@@ -46,7 +46,7 @@ const LocationButtons: React.FC = () => {
       };
 
       axios
-        .post(`${import.meta.env.VITE_API_URL}/address`,locationData)
+        .post(`${import.meta.env.VITE_API_URL}/address`, locationData)
         .then(() => {
           // Redirect user to /other-location after successful POST request
           navigate('/other-location');
@@ -129,13 +129,13 @@ const LocationButtons: React.FC = () => {
         >
           Confirm Current Location
         </button>
-        {/* <button
+        <button
           onClick={addOtherLocation}
           className="w-1/2 mx-1 py-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
           aria-label="Add other location"
         >
           Add Other Location
-        </button> */}
+        </button>
       </div>
     </div>
   );
