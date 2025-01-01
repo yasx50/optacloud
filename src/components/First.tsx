@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 
 const LocationButtons: React.FC = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
@@ -33,6 +34,28 @@ const LocationButtons: React.FC = () => {
   // Function to navigate to manual location selection page
   const selectLocationManually = () => {
     navigate('/select-location');
+  };
+
+  // Function to save the location and redirect
+  const confirmCurrentLocation = () => {
+    if (userLocation) {
+      // Send POST request to save the current location
+      const locationData = {
+        label: 'Current Location',
+        details: `Latitude: ${userLocation[0]}, Longitude: ${userLocation[1]}`
+      };
+
+      axios
+        .post(`${import.meta.env.VITE_API_URL}/address`,locationData)
+        .then(() => {
+          // Redirect user to /other-location after successful POST request
+          navigate('/other-location');
+        })
+        .catch((error) => {
+          console.error('Error saving location:', error);
+          alert('Failed to save location. Please try again.');
+        });
+    }
   };
 
   // Function to navigate to other location page
@@ -98,15 +121,21 @@ const LocationButtons: React.FC = () => {
         </button>
       </div>
 
-      {/* Move the "Add Other Location" button to the right and make it shorter */}
-      <div className="flex justify-end p-4">
+      <div className="flex justify-between p-4 bg-orange-100">
         <button
+          onClick={confirmCurrentLocation}
+          className="w-3/4 mx-1 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
+          aria-label="Confirm your current location"
+        >
+          Confirm Current Location
+        </button>
+        {/* <button
           onClick={addOtherLocation}
-          className="py-2 px-4 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
+          className="w-1/2 mx-1 py-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
           aria-label="Add other location"
         >
           Add Other Location
-        </button>
+        </button> */}
       </div>
     </div>
   );
