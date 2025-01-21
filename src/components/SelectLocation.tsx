@@ -33,7 +33,7 @@ const SelectLocation: React.FC = () => {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/address`, locationData);
 
         alert(`Location saved successfully! ID: ${response.data.id}`);
-      } catch (error) {
+      } catch (error:any) {
         console.error('Error saving location:', error);
         if (error.response) {
           alert(`Error: ${error.response.data.message || error.message}`);
