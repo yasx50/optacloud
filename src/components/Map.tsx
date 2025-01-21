@@ -5,6 +5,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Map: React.FC = () => {
+    const indiaCenter: [number, number] = [20.5937, 78.9629]; // India center coordinates
+
     const [position, setPosition] = useState<[number, number] | null>(null);
     const [decodedAddress, setDecodedAddress] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -137,11 +139,10 @@ const Map: React.FC = () => {
                 </button>
             </div>
 
-            
             {!showModal && (
                 <MapContainer
-                    center={position || [51.505, -0.09]} // Fallback to default if no position is set
-                    zoom={13}
+                    center={position || indiaCenter} // Default to India center
+                    zoom={5} // Adjusted zoom level for a broader view of India
                     style={{ height: "400px", width: "100%" }}
                     className={`rounded-lg shadow-md ${showModal ? "pointer-events-none" : ""}`}
                 >
@@ -149,8 +150,6 @@ const Map: React.FC = () => {
                     <LocationMarker />
                 </MapContainer>
             )}
-
-            {/* Search Address */}
 
             {/* Show Selected Position */}
             {position && (
@@ -223,14 +222,14 @@ const Map: React.FC = () => {
                         </div>
                         <div className="flex justify-end space-x-2">
                             <button
-                                onClick={() => setShowModal(false)} // Close the modal
-                                className="bg-gray-400 text-white py-2 px-4 rounded-md hover:bg-gray-500"
+                                onClick={() => setShowModal(false)} // Close the modal without saving
+                                className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-colors duration-300"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={saveAddress}
-                                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-300"
                             >
                                 Save Address
                             </button>

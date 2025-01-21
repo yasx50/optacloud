@@ -6,49 +6,44 @@ import axios from 'axios';
 
 const LocationButtons: React.FC = () => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); // Add loading state
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Function to enable GPS
   const enableGPS = () => {
-    setLoading(true); // Set loading to true
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation([latitude, longitude]);
-          setLoading(false); // Set loading to false after fetching location
+          setLoading(false);
         },
         (error) => {
           console.error('Error enabling GPS:', error);
           alert('Unable to retrieve your location. Please check your GPS settings.');
-          setLoading(false); // Set loading to false in case of error
+          setLoading(false);
         }
       );
     } else {
       alert('Geolocation is not supported by your browser.');
-      setLoading(false); // Set loading to false if geolocation is not supported
+      setLoading(false);
     }
   };
 
-  // Function to navigate to manual location selection page
   const selectLocationManually = () => {
     navigate('/select-location');
   };
 
-  // Function to save the location and redirect
   const confirmCurrentLocation = () => {
     if (userLocation) {
-      // Send POST request to save the current location
       const locationData = {
-        label: 'Current Location',
-        details: `Latitude: ${userLocation[0]}, Longitude: ${userLocation[1]}`
+        label: 'Current Location',  
+        details: `Latitude: ${userLocation[0]}, Longitude: ${userLocation[1]}`,
       };
 
       axios
         .post(`${import.meta.env.VITE_API_URL}/address`, locationData)
         .then(() => {
-          // Redirect user to /other-location after successful POST request
           navigate('/other-location');
         })
         .catch((error) => {
@@ -58,85 +53,91 @@ const LocationButtons: React.FC = () => {
     }
   };
 
-  // Function to navigate to other location page
   const addOtherLocation = () => {
     navigate('/other-location');
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-orange-50">
-      <div className="flex-grow">
-        {/* Conditional rendering based on userLocation */}
+    <div className="min-h-screen flex flex-col justify-between bg-gray-900 text-gray-200">
+      <header className="bg-gray-800 text-center py-6 shadow-lg">
+        <h1 className="text-3xl font-bold">GeoQuest</h1>
+        <p className="text-sm mt-2 italic">
+          "Wherever you are, let your location tell your story."
+        </p>
+      </header>
+
+      <main className="flex-grow p-6">
         {loading ? (
-          <p className="text-center text-orange-700 p-4">Fetching your location...</p>
+          <p className="text-center text-gray-400 p-4">
+            "Searching for your location... hang tight!"
+          </p>
         ) : userLocation ? (
-          <MapContainer
-            center={userLocation}
-            zoom={13}
-            style={{ height: '400px', width: '100%' }}
-            aria-label="User's Location Map"
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-            />
-            <Marker position={userLocation}>
-              <Popup>Your Current Location</Popup>
-            </Marker>
-          </MapContainer>
+          <>
+            <p className="text-center mb-4 text-gray-300">
+              "Here's where your journey begins."
+            </p>
+            <MapContainer
+              center={userLocation}
+              zoom={13}
+              style={{ height: '400px', width: '100%' }}
+              aria-label="User's Location Map"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+              />
+              <Marker position={userLocation}>
+                <Popup>Your Current Location</Popup>
+              </Marker>
+            </MapContainer>
+          </>
         ) : (
-          <p className="text-center text-orange-700 p-4">Enable GPS to view your location on the map.</p>
+          <p className="text-center text-gray-400 p-4">
+            "Enable GPS to uncover the map of your life."
+          </p>
         )}
-      </div>
+      </main>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col items-center my-8">
-        <h1 className="text-4xl font-extrabold text-center text-orange-700 mb-4">OptaCloud</h1>
-        <p className="text-orange-700 text-lg mt-4">Assignment for Yash Yadav</p>
-        <a
-          href="https://yash50.me"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-orange-700 underline mt-2"
-          aria-label="Visit Yash Yadav's portfolio"
-        >
-          Visit My Portfolio
-        </a>
-      </div>
+      <footer className="p-6 bg-gray-800">
+        <div className="flex flex-col gap-4">
+          <button
+            onClick={enableGPS}
+            className="w-full py-3 bg-teal-500 text-gray-900 font-bold rounded-lg shadow-lg hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-300"
+            aria-label="Enable GPS and view current location"
+          >
+            Enable GPS
+          </button>
 
-      <div className="flex justify-between p-4 bg-orange-100">
-        <button
-          onClick={enableGPS}
-          className="w-1/2 mx-1 py-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
-          aria-label="Enable GPS and view current location"
-        >
-          Enable GPS
-        </button>
-        <button
-          onClick={selectLocationManually}
-          className="w-1/2 mx-1 py-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
-          aria-label="Manually select location"
-        >
-          Select Location Manually
-        </button>
-      </div>
+          <button
+            onClick={selectLocationManually}
+            className="w-full py-3 bg-indigo-500 text-gray-900 font-bold rounded-lg shadow-lg hover:bg-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+            aria-label="Manually select location"
+          >
+            Select Location Manually
+          </button>
 
-      <div className="flex justify-between p-4 bg-orange-100">
-        <button
-          onClick={confirmCurrentLocation}
-          className="w-3/4 mx-1 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
-          aria-label="Confirm your current location"
-        >
-          Confirm Current Location
-        </button>
-        <button
-          onClick={addOtherLocation}
-          className="w-1/2 mx-1 py-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300"
-          aria-label="Add other location"
-        >
-          Add Other Location
-        </button>
-      </div>
+          {userLocation && (
+            <button
+              onClick={confirmCurrentLocation}
+              className="w-full py-3 bg-emerald-500 text-gray-900 font-bold rounded-lg shadow-lg hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-300"
+              aria-label="Confirm your current location"
+            >
+              Confirm Current Location
+            </button>
+          )}
+
+          <button
+            onClick={addOtherLocation}
+            className="w-full py-3 bg-purple-500 text-gray-900 font-bold rounded-lg shadow-lg hover:bg-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-300"
+            aria-label="Add other location"
+          >
+            Add Other Location
+          </button>
+        </div>
+        <p className="text-center text-gray-500 mt-4 italic">
+          "Every location has a story to tell—what's yours?"
+        </p>
+      </footer>
     </div>
   );
 };
